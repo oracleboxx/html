@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<script type="text/javascript"></script>
+<body>
+<h2>select 와 textarea, image 입력양식등</h2>
+<form>
+자동차 : <select name= "cars">
+		<option value ="bmw" > BMW
+		<option value ="benz" selected> BENZ <!--  selected 속성을 사용하면 미리 선택됨 -->
+</select>
+고객의 의견: <textarea name ="feedback" rows="5" cols= "50"></textarea>
+<!--  textarea태그는 한줄이사 여러줄을 입력할 수 있는 입력바스를 만든다. rows속성은 행을 만들고, cols속성은 열을 만든다 -->
+ 	<br>
+ 	<Button type ="submit" > 
+ 	<img src ="../images/submit.jpg"></Button>
+ 	<!--  button의 type 기본값은 submit이다. -->
+ 	<input type = "image" src= "../images/subit.jpg" alt ="제출 버튼">
+ 	<!--  image는 이미지 삽입과 특히 자료를 서버로 제출하는 기능이 있다. -->
+ 	<input type = "Reset" value="취소">
+ 	
+
+</form>
+</body>
+</html>

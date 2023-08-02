@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<link href="signup.css" rel="stylesheet" />
+<script src="signup.js"></script>
+<style type="text/css">
+* {
+	margin: 0px;
+	box-sizing: border-box;
+	font-size: 20px;
+}
+
+html {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+body {
+	width: 45%;
+	border: 1px solid black;
+}
+
+input {
+	border: 1px solid black;
+	border-radius: 3px;
+	line-height: 35px;
+	font-size: 12px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+wrapper {
+	padding: 10px;
+}
+
+div {
+	padding-top: 3px;
+	padding-bottom: 8px;
+}
+
+.title {
+	text-align: center;
+	font-weight: 700;
+}
+
+.email input {
+	    position: absolute;
+    top: 16px;
+    right: 13px;
+    font-size: 15px;
+    color: #8e8e8e;
+}
+
+.name input {
+	width: 100%;
+}
+
+.password input {
+	    width: 18px;
+    height: 20px;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    margin-top: -10px;
+    cursor: pointer;
+}
+
+.passwordCheck input {
+	width: 100%;
+}
+
+.phone {
+	display: flex;
+	justify-content: space-between;
+	line-height: 35px;
+}
+
+#phone1 {
+	width: 18%;
+}
+
+#phone2 {
+	width: 30%;
+}
+
+#phone3 {
+	width: 30%;
+}
+
+.auth {
+	display: flex;
+	justify-content: space-between;
+}
+
+.timer {
+	display: flex;
+	justify-content: space-between;
+}
+
+.auth div {
+	width: 30%;
+	text-align: center;
+	font-weight: 700;
+	font-size: 15px;
+}
+
+.auth button {
+	width: 70%;
+}
+</style>
+<script type="text/javascript">
+		function changePhone1() {
+			const phone1 = document.getElementById("phone1").value // 010
+			if (phone1.length === 3) {
+				document.getElementById("phone2").focus();
+			}
+		}
+		function changePhone2() {
+			const phone2 = document.getElementById("phone2").value //  010 
+			if (phone2.length === 4) {
+				document.getElementById("phone3").focus();
+			}
+		}
+		function changePhone3() {
+			const phone3 = document.getElementById("phone3").value // 010
+			if (phone3.length === 4) {
+				document.getElementById("sendMessage").focus();
+				document.getElementById("sendMessage").setAttribute("style",
+						"background-color: ;")
+				document.getElementById("sendMessage").disabled = false;
+			}
+		}
+		function initButton() {
+			document.getElementById("sendMessage").disabled = true;
+			document.getElementById("completion").disabled = true;
+			document.getElementById("certificationNumber").innerHTML = "000000";
+			document.getElementById("timeLimit").innerHTML = "03:00";
+			document.getElementById("sendMessage").setAttribute("style",
+					"background-color:none;")
+			document.getElementById("completion").setAttribute("style",
+					"background-color:none;")
+		}
+		
+		let processID = -1;
+
+		const getToken = () => {
+
+		  // 인증확인 버튼 활성화
+		  document.getElementById("completion").setAttribute("style","background-color:yellow;")
+		  document.getElementById("completion").disabled = false;
+
+		  if (processID != -1) clearInterval(processID);
+		  const token = String(Math.floor(Math.random() * 1000000)).padStart(6, "0");
+		  document.getElementById("certificationNumber").innerText = token;
+		  let time = 180;
+		  processID = setInterval(function () {
+		    if (time < 0 || document.getElementById("sendMessage").disabled) {
+		      clearInterval(processID);
+		      initButton();
+		      return;
+		    }
+		    let mm = String(Math.floor(time / 60)).padStart(2, "0");
+		    let ss = String(time % 60).padStart(2, "0");
+		    let result = mm + ":" + ss;
+		    document.getElementById("timeLimit").innerText = result;
+		    time--;
+		  }, 50);
+		};
+		function checkCompletion(){
+		  alert("문자 인증이 완료되었습니다.")
+		  initButton();
+		  document.getElementById("completion").innerHTML="인증완료"
+		  document.getElementById("signUpButton").disabled = false;
+		  document.getElementById("signUpButton").setAttribute("style","background-color:yellow;")
+		}
+		function signUpCheck(){
+	
+			  let email = document.getElementById("email").value
+			  let name = document.getElementById("name").value
+			  let password = document.getElementById("password").value
+			  let passwordCheck = document.getElementById("passwordCheck").value
+			  let area = document.getElementById("area").value
+			  let gender_man = document.getElementById("gender_man").checked
+			  let gender_woman = document.getElementById("gender_woman").checked
+			  let check = true;
+			  
+			  if(email.includes('@')){
+				    let emailId = email.split('@')[0]
+				    let emailServer = email.split('@')[1]
+				    if(emailId === "" || emailServer === ""){
+				      document.getElementById("emailError").innerHTML="이메일이 올바르지 않습니다."
+				      check = false
+				    }
+				    else{
+				      document.getElementById("emailError").innerHTML=""
+				    }
+				  }else{
+				    document.getElementById("emailError").innerHTML="이메일이 올바르지 않습니다."
+				    check = false
+				  }
+	
+	
+				  // 이름확인
+				  if(name===""){
+				    document.getElementById("nameError").innerHTML="이름이 올바르지 않습니다."
+				    check = false
+				  }else{
+				    document.getElementById("nameError").innerHTML=""
+				  }
+	
+	
+				  // 비밀번호 확인
+				  if(password !== passwordCheck){
+				    document.getElementById("passwordError").innerHTML=""
+				    document.getElementById("passwordCheckError").innerHTML="비밀번호가 동일하지 않습니다."
+				    check = false
+				  }else{
+				    document.getElementById("passwordError").innerHTML=""
+				    document.getElementById("passwordCheckError").innerHTML=""
+				  }
+	
+				  if(password===""){
+				    document.getElementById("passwordError").innerHTML="비밀번호를 입력해주세요."
+				    check = false
+				  }else{
+				    //document.getElementById("passwordError").innerHTML=""
+				  }
+				  if(passwordCheck===""){
+				    document.getElementById("passwordCheckError").innerHTML="비밀번호를 다시 입력해주세요."
+				    check = false
+				  }else{
+				    //document.getElementById("passwordCheckError").innerHTML=""
+				  }
+	
+	
+				  // 지역선택 확인
+				  if(area === "지역을 선택하세요."){
+				    document.getElementById("areaError").innerHTML="지역을 선택해주세요."
+				    check = false
+				  }else{
+				    document.getElementById("areaError").innerHTML=""
+				  }
+	
+				  // 성별체크확인
+				  if(!gender_man && !gender_woman){
+				    document.getElementById("genderError").innerHTML="성별을 선택해주세요."
+				    check = false
+				  }else{
+				    document.getElementById("genderError").innerHTML=""
+				  }
+				  
+				  if(check){
+				    document.getElementById("emailError").innerHTML=""
+				    document.getElementById("nameError").innerHTML=""
+				    document.getElementById("passwordError").innerHTML=""
+				    document.getElementById("passwordCheckError").innerHTML=""
+				    document.getElementById("areaError").innerHTML=""
+				    document.getElementById("genderError").innerHTML=""
+				    
+				    //비동기 처리이벤트
+				   
+		  function checkPasswordMatch() {
+		    const password = document.getElementById("pw").value;
+		    const passwordCheck = document.getElementById("pwCheck").value;
+		    const pwError = document.getElementById("pwError");
+
+		    if (password !== passwordCheck) {
+			      pwError.innerHTML = "비밀번호가 일치하지 않습니다.";
+			      document.getElementById("signUpButton").disabled = true; // 비밀번호 불일치 시 가입 버튼 비활성화
+			    } else {
+			      pwError.innerHTML = ""; // 일치하면 오류 메시지를 지웁니다.
+			      document.getElementById("signUpButton").disabled = false; // 비밀번호 일치 시 가입 버튼 활성화
+			    }
+			  }
+
+		  // 비밀번호 확인 input 요소에 oninput 이벤트를 추가합니다.
+		  document.getElementById("pwCheck").oninput = checkPasswordMatch;
+	
+		     setTimeout(function() {
+		            alert("가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+		            window.location.href = "login.html"; // 로그인 페이지 URL로 변경
+		          }, 0);
+		        }
+		      }
+	</script>
+<title></title>
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="title">
+			<h1 style="font-size: 21px;">회원가입</h1>
+			<br> <Br>
+		</div>
+		<form action="signup" method="post"></form>
+			<div class="gender"></div>
+			성별: <input id="gender_male" name="gender" type="radio"
+				style="font-size: 30px;">남성 <input id="gender_female"
+				name="gender" type="radio" style="font-size: 30px;">여성 <br>
+			<br>
+
+			<div class="email"></div>
+			이메일: <input id="email" type="text" style="font-size: 16px;"
+				placeholder="이메일을 입력해 주세요."><br> <br>
+
+
+			<div id="emailError" class="error"></div>
+			<div class="name"></div>
+			이름 : <input id="name" type="text" style="font-size: 16px;"
+				placeholder="이름을 입력해주세요."> <br> <br>
+			<div id="nameError" class="error"></div>
+			<div class="id"></div>
+			아이디 : <input id="id" type="text" style="font-size: 16px;"
+				placeholder="아이디를 입력해주세요."><br> <br>
+			<div id="idError" class="error"></div>
+
+			<div class="pw"></div>
+			비밀번호 : <input id="pw" type="password" style="font-size: 16px;"
+				placeholder="비밀번호를 입력해주세요."><Br> <br> 비밀번호 확인 : <input
+				id="pwCheck" type="password" style="font-size: 16px;"
+				placeholder="비밀번호를 입력해주세요."><Br> <br>
+			<div id="pwError" class="error"></div>
+			<div class="area"></div>
+			지역 : <select id=area style="font-size: 16px;">
+				<option>서울</option>
+				<option>대구</option>
+				<option>울산</option>
+				<option>경기도</option>
+				<option>강원도</option>
+				<option>전라도</option>
+			</select><br> <br>
+			<div id="areaError" class="error"></div>
+
+
+			<div class="phone">
+				전화번호 : <input id="phone1" type="text" size="1" maxlength="3"
+					style="font-size: 16px;" oninput="changePhone1()"> <input
+					id="phone2" type="text" size="3" maxlength="4"
+					style="font-size: 16px;" oninput="changePhone2()"> <input
+					id="phone3" type="text" size="3" maxlength="4"
+					style="font-size: 16px;" oninput="changePhone3()">
+
+			</div>
+			<br> <br>
+
+
+			<div class="auth">
+				<div id="certificationNumber">000000</div>
+				<button disabled id="sendMessage" onclick="getToken()">인증번호
+					전송</button>
+				<br> <Br>
+			</div>
+			<div class="timer">
+				<div id="timeLimit">03:00</div>
+				<button disabled id="completion" onclick="checkCompletion()">인증확인</button>
+			</div>
+			<div class="signUp">
+			<input type = "button" value ="가입하기" onclick= "href ='login.html'">
+				<button type="submit">가입하기</button>
+		
+	</div>
+	</div>
+</body>
+</html>
